@@ -86,7 +86,7 @@
     <!-- デバッグ -->
     <div id ="debug">
         <div class = "container debug">
-            <pre>#{ $data }</pre>
+            <pre>#{ $data }}</pre>
         </div>
     </div>
 </div>
@@ -100,7 +100,7 @@
 <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
 <script>
     axios.defaults.xsrfCookieName = 'csrftoken'
-    axios.defaults.xsrfCookieName = 'X-CSRFToken'
+    axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
     const api = axios.create({
         baseURL: '/api/v1/',
@@ -111,30 +111,30 @@
         }
     })
 
-    Vue.options.delimiters = ['#{','}']
+    Vue.options.delimiters = ['#{',　'}']
 
     const app = new Vue({
-        el: '#app' ,
+        el: '#app',
         data: {
             form: {
-                book:{
-                    title:'',
-                    price:0
+                book: {
+                    title: '',
+                    price: 0
                 }
             },
-            messages:{
-                info: [],
-                warning:[],
-                error:''
+            message: {
+                info: '',
+                warnings: [],
+                error: ''
             }
         },
         computed: {
-            isCreated: function(){
+            isCreated: function() {
                 return this.form.book.id !== undefined
             }
         },
         methods: {
-            submitSave: function(){
+            submitSave: function() {
                 this.clearMessages()
                 api({
                     method: this.isCreated ? 'put' : 'post',
@@ -147,20 +147,19 @@
                 })
                     .then(response => {
                         this.message.info = this.isCreated ? '更新しました。' : '登録しました。'
-
                         this.form.book = response.data
                     })
                     .catch(error => {
                         const status = error.response ? error.response.status : 500
                         if (status === 400) {
-                            this.messages.warnings = [].concat.apply(
-                                [],Object.values(error.response.data))
+                            this.message.warnings = [].concat.apply(
+                                [], Object.values(error.response.data))
                         } else if (status === 401) {
                             this.message.error = '認証エラー'
                         } else if (status === 403) {
                             this.message.error = '権限エラーです。'
                         } else {
-                            this.messages.error = 'その他エラーです。'
+                            this.message.error = 'その他エラーです。'
                         }
                     })
             },

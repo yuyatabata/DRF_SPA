@@ -71,7 +71,7 @@ TEMPLATES = [
 ]
 
 # Authentication
-LOGIN_REDIRECT = '/'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'rest_framework:login'
 
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -130,7 +130,7 @@ STATICFIELS_DIRS = [os.path.join(BASE_DIR, 'static')]
 # REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : [
-        'rest_framework.authentication.SessionAuthentication' ,
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
 
